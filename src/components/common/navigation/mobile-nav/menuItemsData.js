@@ -1,19 +1,19 @@
 export const menuItemsData = [
 	{
-		title: "Preço",
-		url: "#pricing",
-	},
-	{
-		title: "Contato",
-		url: "#contact",
-	},
-	{
-		title: "Blog",
-		url: "/blog",
+		title: "Home",
+		url: "/",
 	},
 	{
 		title: "Sobre Nós",
-		url: "#about",
+		url: "/sobre-nos",
+	},
+	{
+		title: "Contato",
+		url: "/contact-us",
+	},
+	{
+		title: "Preço",
+		url: "/pricing",
 	},
 	{
 		title: "Login",
