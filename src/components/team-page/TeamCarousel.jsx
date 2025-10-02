@@ -4,30 +4,27 @@ import { Navigation, Pagination } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import image1 from "../../assets/images/team/bruno1.jpeg";
-import image2 from "../../assets/images/team/bruno2.jpg";
-import image3 from "../../assets/images/team/bruno3.jpg";
-import image4 from "../../assets/images/team/bruno4.jpg";
+import placeholderImage from "../../assets/images/team/thumb1.png";
 
 const images = [
     {
         id: 1,
-        src: image1,
+        src: placeholderImage,
         alt: "Bruno Medeiros em evento de SEO"
     },
     {
         id: 2,
-        src: image2,
+        src: placeholderImage,
         alt: "Bruno Medeiros palestrando"
     },
     {
         id: 3,
-        src: image3,
+        src: placeholderImage,
         alt: "Bruno Medeiros em Chiang Mai"
     },
     {
         id: 4,
-        src: image4,
+        src: placeholderImage,
         alt: "Bruno Medeiros em evento de SEO"
     }
 ];

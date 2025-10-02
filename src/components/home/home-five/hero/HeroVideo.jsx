@@ -1,6 +1,6 @@
 import { useState } from "react";
 import ModalVideo from "react-modal-video";
-import Thumb from "../../../../assets/images/v5/herothumb.png";
+import Thumb from "../../../../assets/images/v5/aboutthumb.png";
 import Icon6 from "../../../../assets/images/v5/icon6.png";
 import Icon7 from "../../../../assets/images/v5/icon7.png";
 import FadeInUp from "../../../animation/FadeInUp";
