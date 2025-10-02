@@ -665,7 +665,7 @@ bodt {
 
 /*responsive*/
 @media (max-width: 991px) {
-	.menu-block-wrapper {
+	.menu-block-wrapper .menu-block {
 		display: none;
 	}
 
