@@ -22,6 +22,7 @@ const UnifiedCheckout = ({ plan, className = '', children }) => {
         setError('');
 
         const mappedPlan = planMapping[plan] || plan.toLowerCase();
+        let destinationUrl = '';
 
         try {
             const checkoutFunctionUrl = 'https://uorwocetqyjkpioimrjk.supabase.co/functions/v1/create-checkout-session';
@@ -49,28 +50,28 @@ const UnifiedCheckout = ({ plan, className = '', children }) => {
                 throw new Error('Client secret não recebido.');
             }
 
-            const destinationUrl = `${checkoutAppUrl}?client_secret=${clientSecret}`;
-        
-            // ** LÓGICA DE REDIRECIONAMENTO ROBUSTA **
-            try {
-              if (typeof window.fbq === 'function') {
-                // Tenta usar o método ideal
-                window.fbq('linker', destinationUrl);
-              } else {
-                // Fallback se fbq não existe
-                window.location.href = destinationUrl;
-              }
-            } catch (e) {
-              // Fallback final se o 'linker' não estiver pronto
-              console.error("FB linker failed, falling back to standard redirect:", e);
+            destinationUrl = `${checkoutAppUrl}?client_secret=${clientSecret}`;
+            
+            // ** LÓGICA DE REDIRECIONAMENTO DEFINITIVA **
+            // Verifica se o FB Pixel e seu módulo 'linker' estão prontos
+            if (typeof window.fbq === 'function' && window.fbq.linker) {
+              // O linker do FB apenas decora a URL, nós controlamos a navegação.
+              const decoratedUrl = window.fbq.linker(destinationUrl);
+              window.location.href = decoratedUrl;
+            } else {
+              // Se não estiver pronto, nós navegamos diretamente. O redirecionamento é garantido.
               window.location.href = destinationUrl;
             }
 
         } catch (err) {
             console.error('Erro no processo de checkout:', err);
-            // Usando setError em vez de alert
             setError(`Ocorreu um erro: ${err.message}`);
-            setLoading(false); // Reativa o botão em caso de erro
+            setLoading(false);
+
+            // Se a falha ocorreu depois de obter a URL de destino, ainda tenta redirecionar
+            if (destinationUrl) {
+                window.location.href = destinationUrl;
+            }
         }
     };
 
