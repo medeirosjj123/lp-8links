@@ -49,15 +49,21 @@ const UnifiedCheckout = ({ plan, className = '', children }) => {
                 throw new Error('Client secret não recebido.');
             }
 
-            // ** LÓGICA DE RASTREAMENTO CROSS-DOMAIN **
             const destinationUrl = `${checkoutAppUrl}?client_secret=${clientSecret}`;
-            
-            if (typeof window.fbq === 'function') {
-                // Deixa o Facebook decorar a URL com os parâmetros de rastreamento e redirecionar
+        
+            // ** LÓGICA DE REDIRECIONAMENTO ROBUSTA **
+            try {
+              if (typeof window.fbq === 'function') {
+                // Tenta usar o método ideal
                 window.fbq('linker', destinationUrl);
-            } else {
-                // Fallback se o pixel não carregar a tempo
+              } else {
+                // Fallback se fbq não existe
                 window.location.href = destinationUrl;
+              }
+            } catch (e) {
+              // Fallback final se o 'linker' não estiver pronto
+              console.error("FB linker failed, falling back to standard redirect:", e);
+              window.location.href = destinationUrl;
             }
 
         } catch (err) {
