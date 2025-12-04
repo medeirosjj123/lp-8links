@@ -1,37 +1,19 @@
 // UnifiedCheckout.jsx
 // -----------------------------------------------------------------------------
-// Componente para checkout unificado via Stripe
-// Substitui links da Kiwify e WooCommerce
+// Componente para checkout unificado via Stripe com rastreamento Cross-Domain do FB
 // -----------------------------------------------------------------------------
 
 import { useState } from 'react';
-import { trackCheckoutStarted, trackButtonClick } from '../common/GoogleAnalytics';
-import { trackFBInitiateCheckout } from '../common/FacebookPixel';
 
-const UnifiedCheckout = ({ plan, frequency = 'monthly', className = '', children }) => {
+const UnifiedCheckout = ({ plan, className = '', children }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
     // Mapear nomes em português para chaves do backend
     const planMapping = {
         'Empreendedor': 'starter',
-        'Profissional': 'pro', 
-        'Agência': 'club'
-    };
-
-    // Pegar referral code da URL ou localStorage
-    const getReferralCode = () => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const refCode = urlParams.get('ref') || urlParams.get('referral');
-        
-        if (refCode) {
-            // Salvar no localStorage para uso posterior
-            localStorage.setItem('refgrow_referral', refCode);
-            return refCode;
-        }
-        
-        // Verificar localStorage
-        return localStorage.getItem('refgrow_referral');
+        'Profissional': 'pro',
+        'Agência': 'agency'
     };
 
     const handleCheckout = async (e) => {
@@ -39,73 +21,60 @@ const UnifiedCheckout = ({ plan, frequency = 'monthly', className = '', children
         setLoading(true);
         setError('');
 
-        // Valores dos planos para tracking
-        const planValues = {
-            'starter': frequency === 'yearly' ? 997 : 97,
-            'pro': frequency === 'yearly' ? 1997 : 197,
-            'club': frequency === 'yearly' ? 3997 : 397
-        };
-        
         const mappedPlan = planMapping[plan] || plan.toLowerCase();
-        const planValue = planValues[mappedPlan] || 0;
-
-        // Tracking de início do checkout
-        trackCheckoutStarted(mappedPlan, planValue);
-        trackFBInitiateCheckout(planValue);
-        trackButtonClick('checkout_button', `plan_${mappedPlan}_${frequency}`);
 
         try {
-            let checkoutUrl = '';
-            const referralCode = getReferralCode();
+            const checkoutFunctionUrl = 'https://uorwocetqyjkpioimrjk.supabase.co/functions/v1/create-checkout-session';
+            const checkoutAppUrl = 'https://app.8links.com.br/checkout';
 
-            if (frequency === 'yearly') {
-                // Planos anuais - Kiwify
-                const kiwifyLinks = {
-                    'starter': 'https://pay.kiwify.com.br/VhxPvCY',
-                    'pro': 'https://pay.kiwify.com.br/8l9dl9p',
-                    'club': 'https://pay.kiwify.com.br/YISbb4U'
-                };
-                
-                checkoutUrl = kiwifyLinks[mappedPlan];
-                if (checkoutUrl && referralCode) {
-                    checkoutUrl = `${checkoutUrl}?ref=${referralCode}`;
-                }
-            } else {
-                // Planos mensais - Stripe
-                const stripeLinks = {
-                    'starter': 'https://buy.stripe.com/aFaeVd2c89Mp5Wr2Z22Ji00',
-                    'pro': 'https://buy.stripe.com/aFa6oH6so3o1esXfLO2Ji01',
-                    'club': 'https://buy.stripe.com/7sYaEXcQM2jXfx1dDG2Ji02'
-                };
-                
-                checkoutUrl = stripeLinks[mappedPlan];
-                // Note: Stripe Payment Links handle referrals differently
-                // You may need to configure referral tracking in Stripe dashboard
+            const response = await fetch(checkoutFunctionUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
+                },
+                body: JSON.stringify({
+                    planId: mappedPlan,
+                    isTest: false,
+                }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Falha ao criar a sessão de checkout.');
             }
 
-            if (checkoutUrl) {
-                console.log('🔗 Redirecionando para checkout:', { 
-                    plan: mappedPlan, 
-                    frequency, 
-                    url: checkoutUrl 
-                });
-                window.location.href = checkoutUrl;
+            const { clientSecret } = await response.json();
+            if (!clientSecret) {
+                throw new Error('Client secret não recebido.');
+            }
+
+            // ** LÓGICA DE RASTREAMENTO CROSS-DOMAIN **
+            const destinationUrl = `${checkoutAppUrl}?client_secret=${clientSecret}`;
+            
+            if (typeof window.fbq === 'function') {
+                // Deixa o Facebook decorar a URL com os parâmetros de rastreamento e redirecionar
+                window.fbq('linker', destinationUrl);
             } else {
-                setError('Plano não encontrado. Tente novamente.');
+                // Fallback se o pixel não carregar a tempo
+                window.location.href = destinationUrl;
             }
 
         } catch (err) {
-            console.error('❌ Erro no checkout:', err);
-            setError('Erro ao processar checkout. Tente novamente.');
-        } finally {
-            setLoading(false);
+            console.error('Erro no processo de checkout:', err);
+            // Usando setError em vez de alert
+            setError(`Ocorreu um erro: ${err.message}`);
+            setLoading(false); // Reativa o botão em caso de erro
         }
     };
 
     return (
         <div className={`unified-checkout ${className}`}>
             {error && (
-                <div className="alert alert-danger mb-3">
+                <div 
+                    className="alert alert-danger mb-3" 
+                    style={{ fontSize: '14px', color: 'red', marginTop: '10px', textAlign: 'center' }}
+                >
                     {error}
                 </div>
             )}
@@ -113,7 +82,8 @@ const UnifiedCheckout = ({ plan, frequency = 'monthly', className = '', children
             <button
                 onClick={handleCheckout}
                 disabled={loading}
-                className="cta-button"
+                className={`cta-button buy-button ${className}`}
+                data-plan-id={planMapping[plan] || plan.toLowerCase()}
                 style={{
                     background: loading ? '#ccc' : '#FF5C35',
                     color: 'white',
@@ -134,7 +104,7 @@ const UnifiedCheckout = ({ plan, frequency = 'monthly', className = '', children
                     opacity: loading ? 0.7 : 1
                 }}
             >
-                {loading ? 'Processando...' : (children || 'Quero Mais Tráfego')}
+                {loading ? 'Aguarde...' : (children || 'Quero Mais Tráfego')}
             </button>
         </div>
     );
