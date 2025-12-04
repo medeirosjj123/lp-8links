@@ -4,8 +4,9 @@
 // -----------------------------------------------------------------------------
 
 import { useState } from 'react';
+import { trackFBInitiateCheckout } from '../common/FacebookPixel';
 
-const UnifiedCheckout = ({ plan, className = '', children }) => {
+const UnifiedCheckout = ({ plan, frequency = 'monthly', className = '', children }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -22,6 +23,17 @@ const UnifiedCheckout = ({ plan, className = '', children }) => {
         setError('');
 
         const mappedPlan = planMapping[plan] || plan.toLowerCase();
+        
+        // --- LÓGICA DE TRACKING REINSERIDA ---
+        const planValues = {
+            'starter': frequency === 'yearly' ? 997 : 97,
+            'pro': frequency === 'yearly' ? 1997 : 197,
+            'agency': frequency === 'yearly' ? 3997 : 397
+        };
+        const planValue = planValues[mappedPlan] || 0;
+        trackFBInitiateCheckout(planValue, 'BRL');
+        // --- FIM DA LÓGICA DE TRACKING ---
+
         let destinationUrl = '';
 
         try {
@@ -74,6 +86,7 @@ const UnifiedCheckout = ({ plan, className = '', children }) => {
             }
         }
     };
+
 
     return (
         <div className={`unified-checkout ${className}`}>
