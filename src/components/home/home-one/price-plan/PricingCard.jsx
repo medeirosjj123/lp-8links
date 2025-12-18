@@ -45,7 +45,7 @@ function PricingCard({ pricing: { plan, tagline, price, img, features, highlight
 					))}
 				</ul>
 			</div>
-			<div className="sofax-pricing-footer" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+			<div className="sofax-pricing-footer">
 				<UnifiedCheckout 
 					plan={plan}
 					frequency={getFrequencyString()}
@@ -65,8 +65,8 @@ function PricingCard({ pricing: { plan, tagline, price, img, features, highlight
 						fontFamily: 'Inter',
 						fontWeight: '600',
 						border: 'none',
-						padding: '24px',
-						fontSize: '16px',
+						padding: '18px',
+						fontSize: '14px',
 						textDecoration: 'none',
 						display: 'inline-flex',
 						alignItems: 'center',
@@ -75,6 +75,7 @@ function PricingCard({ pricing: { plan, tagline, price, img, features, highlight
 						cursor: 'pointer',
 						width: '100%',
 						textTransform: 'uppercase',
+						marginTop: '10px'
 					}}
 					onMouseOver={(e) => e.target.style.background = '#00A746'}
 					onMouseOut={(e) => e.target.style.background = '#00C853'}
