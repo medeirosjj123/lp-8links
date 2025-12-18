@@ -111,15 +111,15 @@ const UnifiedCheckout = ({ plan, frequency = 'monthly', className = '', children
                     fontFamily: 'Inter',
                     fontWeight: '600',
                     border: 'none',
-                    padding: '24px 48px',
-                    fontSize: '18px',
+                    padding: '24px',
+                    fontSize: '16px',
                     textDecoration: 'none',
                     display: 'inline-flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     transition: 'background-color 0.3s ease',
                     cursor: loading ? 'not-allowed' : 'pointer',
-                    width: 'auto',
+                    width: '100%',
                     textTransform: 'uppercase',
                     opacity: loading ? 0.7 : 1
                 }}

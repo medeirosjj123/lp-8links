@@ -7,6 +7,15 @@ function PricingCard({ pricing: { plan, tagline, price, img, features, highlight
 		return frequency.id === 1 ? 'yearly' : 'monthly';
 	};
 
+	const getPixLink = (planName) => {
+		const pixLinks = {
+			"Empreendedor": "https://pay.kiwify.com.br/D7o0Q7Y",
+			"Profissional": "https://pay.kiwify.com.br/tvnIEAK",
+			"Agência": "https://pay.kiwify.com.br/c4elVky"
+		};
+		return pixLinks[planName];
+	};
+
 	return (
 		<div className="sofax-pricing-wrap">
 			<div className="sofax-pricing-header">
@@ -36,7 +45,7 @@ function PricingCard({ pricing: { plan, tagline, price, img, features, highlight
 					))}
 				</ul>
 			</div>
-			<div className="sofax-pricing-footer">
+			<div className="sofax-pricing-footer" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
 				<UnifiedCheckout 
 					plan={plan}
 					frequency={getFrequencyString()}
@@ -44,6 +53,34 @@ function PricingCard({ pricing: { plan, tagline, price, img, features, highlight
 				>
 					Quero Mais Tráfego
 				</UnifiedCheckout>
+				<a
+					href={getPixLink(plan)}
+					target="_blank"
+					rel="noopener noreferrer"
+					className="cta-button"
+					style={{
+						background: '#00C853',
+						color: 'white',
+						borderRadius: '12px',
+						fontFamily: 'Inter',
+						fontWeight: '600',
+						border: 'none',
+						padding: '24px',
+						fontSize: '16px',
+						textDecoration: 'none',
+						display: 'inline-flex',
+						alignItems: 'center',
+						justifyContent: 'center',
+						transition: 'background-color 0.3s ease',
+						cursor: 'pointer',
+						width: '100%',
+						textTransform: 'uppercase',
+					}}
+					onMouseOver={(e) => e.target.style.background = '#00A746'}
+					onMouseOut={(e) => e.target.style.background = '#00C853'}
+				>
+					Pagar com Pix
+				</a>
 			</div>
 		</div>
 	);
