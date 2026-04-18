@@ -1,0 +1,175 @@
+---
+import '../styles/global.css'
+
+interface Props {
+  title: string
+}
+
+const { title } = Astro.props
+---
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="8links — Seu site na primeira pagina do Google no piloto automatico. Backlinks ilimitados, artigos com IA e monitoramento em tempo real." />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=IBM+Plex+Mono:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet" />
+    <title>{title}</title>
+  </head>
+  <body class="bg-surface text-text-primary">
+
+
+    <slot />
+
+    <script>
+      // Navbar scroll effect
+      const navbar = document.getElementById('navbar')
+      if (navbar) {
+        window.addEventListener('scroll', () => {
+          navbar.classList.toggle('scrolled', window.scrollY > 60)
+        }, { passive: true })
+      }
+
+      // Scroll reveal observer
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible')
+          }
+        })
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' })
+
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el))
+
+      // Number ticker animation
+      function animateNumber(el: Element) {
+        const target = parseInt(el.getAttribute('data-target') || '0')
+        const prefix = el.getAttribute('data-prefix') || ''
+        const suffix = el.getAttribute('data-suffix') || ''
+        const duration = 2200
+        const start = performance.now()
+
+        function update(now: number) {
+          const elapsed = now - start
+          const progress = Math.min(elapsed / duration, 1)
+          const eased = 1 - Math.pow(1 - progress, 4)
+          const current = Math.floor(eased * target)
+          el.textContent = prefix + current.toLocaleString('pt-BR') + suffix
+          if (progress < 1) requestAnimationFrame(update)
+        }
+        requestAnimationFrame(update)
+      }
+
+      const tickerObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            animateNumber(entry.target)
+            tickerObserver.unobserve(entry.target)
+          }
+        })
+      }, { threshold: 0.5 })
+
+      document.querySelectorAll('.ticker[data-target]').forEach(el => tickerObserver.observe(el))
+
+      // Lightbox
+      const lightbox = document.getElementById('lightbox')
+      const lightboxImg = document.getElementById('lightbox-img') as HTMLImageElement | null
+      const lightboxClose = document.getElementById('lightbox-close')
+      const lightboxPrev = document.getElementById('lightbox-prev')
+      const lightboxNext = document.getElementById('lightbox-next')
+      const lightboxCounter = document.getElementById('lightbox-counter')
+      const lightboxItems = Array.from(document.querySelectorAll('[data-lightbox]'))
+      let currentIndex = 0
+
+      function showImage(index: number) {
+        if (!lightboxImg || !lightboxCounter) return
+        currentIndex = (index + lightboxItems.length) % lightboxItems.length
+        const src = lightboxItems[currentIndex].getAttribute('data-lightbox') || ''
+        // Fade out
+        lightboxImg.classList.remove('scale-100', 'opacity-100')
+        lightboxImg.classList.add('scale-95', 'opacity-0')
+        setTimeout(() => {
+          lightboxImg.src = src
+          lightboxCounter.textContent = `${currentIndex + 1} / ${lightboxItems.length}`
+          // Fade in
+          requestAnimationFrame(() => {
+            lightboxImg.classList.remove('scale-95', 'opacity-0')
+            lightboxImg.classList.add('scale-100', 'opacity-100')
+          })
+        }, 150)
+      }
+
+      lightboxItems.forEach((el, i) => {
+        el.addEventListener('click', () => {
+          if (lightbox) {
+            lightbox.style.display = 'flex'
+            showImage(i)
+          }
+        })
+      })
+
+      function closeLightbox() {
+        if (lightbox && lightboxImg) {
+          lightboxImg.classList.remove('scale-100', 'opacity-100')
+          lightboxImg.classList.add('scale-95', 'opacity-0')
+          setTimeout(() => { lightbox.style.display = 'none' }, 200)
+        }
+      }
+
+      lightboxPrev?.addEventListener('click', (e) => { e.stopPropagation(); showImage(currentIndex - 1) })
+      lightboxNext?.addEventListener('click', (e) => { e.stopPropagation(); showImage(currentIndex + 1) })
+      lightbox?.addEventListener('click', (e) => {
+        if (e.target === lightbox) closeLightbox()
+      })
+      lightboxClose?.addEventListener('click', closeLightbox)
+      document.addEventListener('keydown', (e) => {
+        if (lightbox?.style.display !== 'flex') return
+        if (e.key === 'Escape') closeLightbox()
+        if (e.key === 'ArrowLeft') showImage(currentIndex - 1)
+        if (e.key === 'ArrowRight') showImage(currentIndex + 1)
+      })
+
+      // FAQ accordion — close others on open
+      document.querySelectorAll('details').forEach(detail => {
+        detail.addEventListener('toggle', () => {
+          if (detail.open) {
+            document.querySelectorAll('details').forEach(d => {
+              if (d !== detail) d.removeAttribute('open')
+            })
+          }
+        })
+      })
+
+      // Countdown timer (set to 7 days from now for demo)
+      function initCountdown() {
+        const el = document.getElementById('countdown')
+        if (!el) return
+        const endStr = el.getAttribute('data-end')
+        const end = endStr ? new Date(endStr).getTime() : Date.now() + 7 * 24 * 60 * 60 * 1000
+
+        function tick() {
+          const diff = Math.max(0, end - Date.now())
+          const d = Math.floor(diff / 86400000)
+          const h = Math.floor((diff % 86400000) / 3600000)
+          const m = Math.floor((diff % 3600000) / 60000)
+          const s = Math.floor((diff % 60000) / 1000)
+          const dEl = document.getElementById('cd-days')
+          const hEl = document.getElementById('cd-hours')
+          const mEl = document.getElementById('cd-mins')
+          const sEl = document.getElementById('cd-secs')
+          if (dEl) dEl.textContent = String(d).padStart(2, '0')
+          if (hEl) hEl.textContent = String(h).padStart(2, '0')
+          if (mEl) mEl.textContent = String(m).padStart(2, '0')
+          if (sEl) sEl.textContent = String(s).padStart(2, '0')
+        }
+        tick()
+        setInterval(tick, 1000)
+      }
+      initCountdown()
+    </script>
+  </body>
+</html>
