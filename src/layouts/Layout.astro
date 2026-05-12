@@ -143,33 +143,6 @@ const { title } = Astro.props
           }
         })
       })
-
-      // Countdown timer (set to 7 days from now for demo)
-      function initCountdown() {
-        const el = document.getElementById('countdown')
-        if (!el) return
-        const endStr = el.getAttribute('data-end')
-        const end = endStr ? new Date(endStr).getTime() : Date.now() + 7 * 24 * 60 * 60 * 1000
-
-        function tick() {
-          const diff = Math.max(0, end - Date.now())
-          const d = Math.floor(diff / 86400000)
-          const h = Math.floor((diff % 86400000) / 3600000)
-          const m = Math.floor((diff % 3600000) / 60000)
-          const s = Math.floor((diff % 60000) / 1000)
-          const dEl = document.getElementById('cd-days')
-          const hEl = document.getElementById('cd-hours')
-          const mEl = document.getElementById('cd-mins')
-          const sEl = document.getElementById('cd-secs')
-          if (dEl) dEl.textContent = String(d).padStart(2, '0')
-          if (hEl) hEl.textContent = String(h).padStart(2, '0')
-          if (mEl) mEl.textContent = String(m).padStart(2, '0')
-          if (sEl) sEl.textContent = String(s).padStart(2, '0')
-        }
-        tick()
-        setInterval(tick, 1000)
-      }
-      initCountdown()
     </script>
   </body>
 </html>

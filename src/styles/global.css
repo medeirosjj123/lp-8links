@@ -360,22 +360,6 @@ details .faq-content > div {
   background-size: 80px 80px;
 }
 
-/* ── Countdown ── */
-.countdown-digit {
-  font-family: var(--font-mono);
-  font-size: 2rem;
-  font-weight: 700;
-  color: var(--color-orange-500);
-  background: var(--color-surface-card);
-  border: 1px solid var(--color-border-orange);
-  border-radius: 0.75rem;
-  padding: 0.75rem 1rem;
-  min-width: 3.75rem;
-  text-align: center;
-  line-height: 1;
-  box-shadow: 0 4px 24px rgba(249, 115, 22, 0.1);
-}
-
 /* ── Marquee ── */
 .marquee-track {
   display: flex;
@@ -536,4 +520,39 @@ details .faq-content > div {
 /* ── Smooth scroll offset for anchor nav ── */
 section[id] {
   scroll-margin-top: 5rem;
+}
+
+/* ── Pricing table ── */
+.pricing-table {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr;
+  width: 100%;
+}
+
+.pricing-table-row {
+  display: contents;
+}
+
+.pricing-table-row.header .pricing-table-cell {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 2px solid var(--color-border-subtle);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.pricing-table-cell {
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--color-border-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pricing-table-cell.label {
+  justify-content: flex-start;
+  padding-left: 2rem;
+}
+
+.pricing-table-row:last-child .pricing-table-cell {
+  border-bottom: none;
 }
