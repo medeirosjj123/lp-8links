@@ -1,0 +1,132 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-02T00:00:00.000Z",
+  "title": "Design System: 8links",
+  "extensions": {
+    "colorMeta": {
+      "orange-500": { "role": "primary", "displayName": "Laranja Terracota", "canonical": "hsl(24 100% 55%)", "tonalRamp": ["#1a0c03", "#371a06", "#5c2a0a", "#8a3f0e", "#b85213", "#e65c00", "#ff751a", "#ff8b3d", "#ffb380"] },
+      "amber": { "role": "secondary", "displayName": "Âmbar de Atmosfera", "canonical": "hsl(35 100% 50%)", "tonalRamp": ["#1f1300", "#3d2500", "#5c3800", "#8a5400", "#b87000", "#e68a00", "#ff9500", "#ffb13d", "#ffcf80"] },
+      "success-green": { "role": "tertiary", "displayName": "Verde Acerto", "canonical": "#22c55e", "tonalRamp": ["#05130a", "#0a2614", "#0f3a1f", "#16572f", "#1d7440", "#22c55e", "#4ade80", "#86efac", "#bbf7d0"] },
+      "warning-red": { "role": "tertiary", "displayName": "Vermelho Objeção", "canonical": "#ef4444", "tonalRamp": ["#1a0606", "#2e0a0a", "#4d1010", "#7a1818", "#a81f1f", "#ef4444", "#f87171", "#fca5a5", "#fecaca"] },
+      "surface": { "role": "neutral", "displayName": "Palco Quase-Preto", "canonical": "#050505", "tonalRamp": ["#050505", "#0c0c0c", "#0f0f0f", "#171717", "#262626", "#404040", "#555555", "#999999", "#f0f0f0"] },
+      "text-primary": { "role": "neutral", "displayName": "Branco de Texto", "canonical": "#f0f0f0", "tonalRamp": ["#0f0f0f", "#262626", "#404040", "#555555", "#737373", "#999999", "#bbbbbb", "#d4d4d4", "#f0f0f0"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Display", "purpose": "Headlines de hero e seção, Outfit 800, line-height 0.92." },
+      "headline": { "displayName": "Headline", "purpose": "Títulos de bloco de feature split text/imagem." },
+      "title": { "displayName": "Title", "purpose": "Títulos de card e nomes de plano, Outfit 700." },
+      "body": { "displayName": "Body", "purpose": "Parágrafos e descrições, Satoshi 400, 65–75ch." },
+      "label": { "displayName": "Label / Kicker", "purpose": "Badges, tickers e stats. IBM Plex Mono 600 uppercase. Nunca em body." }
+    },
+    "shadows": [
+      { "name": "button-glow", "value": "0 8px 32px rgba(249,115,22,0.3), 0 0 80px rgba(249,115,22,0.1)", "purpose": "Hover do CTA primário — a luz do laranja vazando." },
+      { "name": "card-lift", "value": "0 16px 48px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.05)", "purpose": "Hover de card neutro." },
+      { "name": "card-glow", "value": "0 16px 48px rgba(0,0,0,0.3), 0 0 60px rgba(249,115,22,0.05)", "purpose": "Hover de .card-glow, laranja sutil." },
+      { "name": "pricing-ring", "value": "0 0 60px rgba(249,115,22,0.08), 0 24px 48px rgba(0,0,0,0.4), inset 0 1px 0 rgba(249,115,22,0.1)", "purpose": "Elevação permanente do plano Mais popular." }
+    ],
+    "motion": [
+      { "name": "ease-out-quint", "value": "cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Easing padrão de reveals, cards, nav e accordion." },
+      { "name": "reveal", "value": "opacity/transform 0.9s cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Entrada de seção via IntersectionObserver, com delays escalonados 0.12s." },
+      { "name": "ticker", "value": "ease-out-quart 2200ms", "purpose": "Contagem de número de 0 ao alvo no viewport." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button (Glow)",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "CTA principal de conversão. Brilho deslizante + lift + glow laranja no hover.",
+      "html": "<a class=\"ds-btn-primary\" href=\"#\">Começar agora <svg viewBox=\"0 0 24 24\" width=\"20\" height=\"20\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></a>",
+      "css": ".ds-btn-primary { position: relative; overflow: hidden; display: inline-flex; align-items: center; gap: 0.625rem; padding: 1rem 2rem; background: hsl(24 100% 55%); color: #fff; font-family: Outfit, sans-serif; font-weight: 700; font-size: 1.125rem; border-radius: 1rem; text-decoration: none; transition: all 0.4s cubic-bezier(0.16,1,0.3,1); box-shadow: 0 0 0 0 rgba(249,115,22,0); } .ds-btn-primary::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent); transition: left 0.6s ease; } .ds-btn-primary:hover { background: hsl(24 100% 62%); transform: translateY(-2px); box-shadow: 0 8px 32px rgba(249,115,22,0.3), 0 0 80px rgba(249,115,22,0.1); } .ds-btn-primary:hover::before { left: 100%; } .ds-btn-primary:focus-visible { outline: 2px solid hsl(24 100% 62%); outline-offset: 2px; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "CTA secundário (Ver planos, PIX/Kiwify). Borda sutil que acende laranja no hover.",
+      "html": "<a class=\"ds-btn-outline\" href=\"#\">Ver planos</a>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; gap: 0.5rem; padding: 1rem 1.5rem; background: transparent; color: #999; font-family: Satoshi, sans-serif; font-weight: 500; border: 1px solid rgba(255,255,255,0.06); border-radius: 1.5rem; text-decoration: none; transition: all 0.3s ease; } .ds-btn-outline:hover { border-color: rgba(249,115,22,0.4); background: rgba(249,115,22,0.05); color: hsl(24 100% 62%); } .ds-btn-outline:focus-visible { outline: 2px solid hsl(24 100% 62%); outline-offset: 2px; }"
+    },
+    {
+      "name": "Glass Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Superfície base de feature/conteúdo. Plana em repouso, sobe com glow laranja no hover.",
+      "html": "<div class=\"ds-card\"><div class=\"ds-icon\"><svg viewBox=\"0 0 24 24\" width=\"22\" height=\"22\" fill=\"none\" stroke=\"hsl(24 100% 55%)\" stroke-width=\"1.5\" stroke-linecap=\"round\"><circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.3-4.3\"/></svg></div><h3 class=\"ds-card-title\">Detecta oportunidades</h3><p class=\"ds-card-body\">Encontra as palavras-chave que estão quase na primeira página.</p></div>",
+      "css": ".ds-card { background: rgba(15,15,15,0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.06); border-radius: 1rem; padding: 2rem; transition: all 0.4s cubic-bezier(0.16,1,0.3,1); } .ds-card:hover { border-color: rgba(249,115,22,0.15); background: rgba(18,18,18,0.8); transform: translateY(-3px); box-shadow: 0 16px 48px rgba(0,0,0,0.3), 0 0 60px rgba(249,115,22,0.05); } .ds-icon { display: flex; align-items: center; justify-content: center; width: 2.75rem; height: 2.75rem; border-radius: 0.75rem; background: rgba(249,115,22,0.08); border: 1px solid rgba(249,115,22,0.15); margin-bottom: 1.5rem; } .ds-card-title { font-family: Outfit, sans-serif; font-weight: 700; font-size: 1.25rem; color: #f0f0f0; margin: 0 0 0.75rem; } .ds-card-body { font-family: Satoshi, sans-serif; font-size: 0.9375rem; line-height: 1.6; color: #999; margin: 0; }"
+    },
+    {
+      "name": "Orange Badge (Kicker)",
+      "kind": "chip",
+      "refersTo": "badge-orange",
+      "description": "Pílula mono uppercase que abre cada seção. A voz 'técnica' medida.",
+      "html": "<span class=\"ds-badge\">Como funciona</span>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.375rem 1rem; border-radius: 9999px; background: rgba(249,115,22,0.08); border: 1px solid rgba(249,115,22,0.2); color: hsl(24 100% 62%); font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; }"
+    },
+    {
+      "name": "Pricing Highlight Card",
+      "kind": "card",
+      "refersTo": "pricing-highlight",
+      "description": "Card do plano 'Mais popular'. Elevação permanente com ring laranja pra ancorar a venda.",
+      "html": "<div class=\"ds-pricing\"><div class=\"ds-pricing-tag\">Mais popular</div><h3 class=\"ds-pricing-name\">Pro</h3><div class=\"ds-pricing-price\">R$247<span>/mês</span></div></div>",
+      "css": ".ds-pricing { position: relative; padding: 2rem; border-radius: 1.5rem; background: linear-gradient(180deg, rgba(249,115,22,0.06) 0%, rgba(249,115,22,0.01) 100%); border: 2px solid rgba(249,115,22,0.3); box-shadow: 0 0 60px rgba(249,115,22,0.08), 0 24px 48px rgba(0,0,0,0.4), inset 0 1px 0 rgba(249,115,22,0.1); } .ds-pricing-tag { position: absolute; top: -1rem; left: 50%; transform: translateX(-50%); padding: 0.5rem 1.25rem; border-radius: 9999px; background: linear-gradient(90deg, hsl(24 100% 55%), hsl(24 100% 45%)); color: #fff; font-family: Outfit, sans-serif; font-size: 0.75rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; white-space: nowrap; box-shadow: 0 8px 24px rgba(249,115,22,0.3); } .ds-pricing-name { font-family: Outfit, sans-serif; font-weight: 700; font-size: 1.5rem; color: hsl(24 100% 62%); margin: 1rem 0 0.5rem; } .ds-pricing-price { font-family: Outfit, sans-serif; font-weight: 800; font-size: 3rem; color: hsl(24 100% 55%); } .ds-pricing-price span { font-size: 1rem; font-weight: 400; color: #555; }"
+    },
+    {
+      "name": "FAQ Accordion",
+      "kind": "custom",
+      "refersTo": "card",
+      "description": "Item de FAQ via <details> nativo. Ícone + gira pra × no aberto; conteúdo expande por grid-template-rows.",
+      "html": "<details class=\"ds-faq\"><summary>Funciona pra qualquer nicho?<span class=\"ds-faq-icon\"><svg viewBox=\"0 0 24 24\" width=\"14\" height=\"14\" fill=\"none\" stroke=\"hsl(24 100% 55%)\" stroke-width=\"2.5\" stroke-linecap=\"round\"><path d=\"M12 5v14\"/><path d=\"M5 12h14\"/></svg></span></summary><div class=\"ds-faq-content\"><div><p>Sim. Nossa rede tem 68+ sites em diversos nichos.</p></div></div></details>",
+      "css": ".ds-faq { background: rgba(15,15,15,0.6); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.06); border-radius: 1rem; } .ds-faq summary { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.5rem; cursor: pointer; list-style: none; font-family: Outfit, sans-serif; font-weight: 600; font-size: 1.125rem; color: #f0f0f0; } .ds-faq summary::-webkit-details-marker { display: none; } .ds-faq-icon { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.06); flex-shrink: 0; transition: all 0.4s cubic-bezier(0.16,1,0.3,1); } .ds-faq-icon svg { transition: transform 0.4s cubic-bezier(0.16,1,0.3,1); } .ds-faq[open] .ds-faq-icon { background: rgba(249,115,22,0.1); border-color: rgba(249,115,22,0.3); } .ds-faq[open] .ds-faq-icon svg { transform: rotate(45deg); } .ds-faq-content { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.4s cubic-bezier(0.16,1,0.3,1); } .ds-faq[open] .ds-faq-content { grid-template-rows: 1fr; } .ds-faq-content > div { overflow: hidden; } .ds-faq-content p { padding: 0 1.5rem 1.5rem; margin: 0; font-family: Satoshi, sans-serif; line-height: 1.6; color: #999; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "O Cockpit no Piloto Automático",
+    "overview": "8links é uma sala escura com uma única luz acesa: o laranja terracota do motor trabalhando enquanto você não está olhando. O sistema é quase-preto de ponta a ponta (#050505), e contra esse fundo o laranja não é decoração — é a evidência de que algo está acontecendo sozinho. Aurora difusa, orbs borrados, um beam girando na borda do mockup, tickers que contam sozinhos: tudo comunica automação em movimento, não um painel pra você operar. O sistema rejeita o painel de avião da Ahrefs/Semrush, o SaaS genérico de template, o crypto/hype neon e o curso de info-produto agressivo.",
+    "keyCharacteristics": [
+      "Quase-preto absoluto como palco; laranja terracota como única voz.",
+      "Automação visível: aurora, orbs, beam, tickers, feed ao vivo, marquee.",
+      "Scroll longo e narrado, seção a seção, com respiro generoso (8rem).",
+      "Glass + blur como textura recorrente de superfície (candidato a evolução).",
+      "Mono (IBM Plex Mono) reservado a labels, números e kickers."
+    ],
+    "rules": [
+      { "name": "A Regra da Voz Única", "body": "Existe exatamente um laranja na marca. Verde e vermelho são semântica, não identidade — nunca viram CTA, kicker ou destaque de marca.", "section": "colors" },
+      { "name": "A Regra do Tinte", "body": "Nenhum neutro é cinza puro nem #000/#fff. O preto é #050505, o branco de texto é #f0f0f0. Toda superfície laranja-tingida fica em chroma baixíssimo.", "section": "colors" },
+      { "name": "A Regra do Mono Medido", "body": "Mono só em label, número e kicker. Nunca em body — mono em texto corrido vira costume de dev tool.", "section": "typography" },
+      { "name": "A Regra do Peso, Não do Tamanho Sozinho", "body": "Hierarquia nasce do contraste de peso (800 vs 400) somado ao de escala. Headlines são sempre 800.", "section": "typography" },
+      { "name": "A Regra do Plano em Repouso", "body": "Superfícies são planas paradas. Sombra só aparece como resposta a hover/foco/elevação intencional.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do manter o laranja terracota como voz única. Um acento, um hue.",
+      "Do tingir todo neutro pro hue da marca em chroma baixíssimo. #050505 e #f0f0f0, nunca #000/#fff.",
+      "Do usar contraste de peso (Outfit 800 vs Satoshi 400) como motor de hierarquia.",
+      "Do reservar IBM Plex Mono pra label, número e kicker — nunca body.",
+      "Do manter cards planos em repouso; sombra e glow só como resposta a estado.",
+      "Do mostrar a automação acontecendo (beam, ticker, feed, marquee).",
+      "Do transicionar grid-template-rows (não height) em accordions; ease-out cubic-bezier(0.16, 1, 0.3, 1)."
+    ],
+    "donts": [
+      "Don't deixar parecer painel de avião (Ahrefs/Semrush): tabela densa de dados crus que não age.",
+      "Don't cair no SaaS genérico de template: cream/branco, Inter, grades de cards idênticos, hero centralizado padrão.",
+      "Don't flertar com crypto/hype neon: segundo neon competindo, glow estourado, promessa de enriquecer.",
+      "Don't virar curso de info-produto agressivo: contagem regressiva, vermelho gritando, método secreto.",
+      "Don't usar #000 ou #fff puros, nem cinza neutro sem tinte.",
+      "Don't usar border-left/right colorida como faixa de acento."
+    ],
+    "evolutionPoints": [
+      "gradient-text (background-clip: text + gradiente animado) diverge da lei impeccable; é assinatura atual, evoluir só com decisão deliberada.",
+      "Outfit + IBM Plex Mono estão na reflex-reject list; preservados por serem identidade no ar.",
+      "Glass por padrão (backdrop-filter blur em quase toda superfície); avaliar reduzir a superfícies de destaque.",
+      "Grades de cards idênticos em Problema/Motor/Resultados; considerar quebrar o ritmo.",
+      "Drift token↔hardcode: orange-500 token é hsl(24 100% 55%) mas sombras hardcodam rgba(249,115,22) (#f97316). Unificar.",
+      "prefers-reduced-motion não respeitado — pendência de WCAG AA.",
+      "Contraste de text-muted (#555 sobre #050505) abaixo de 4.5:1 — auditar onde for texto informativo."
+    ]
+  }
+}
