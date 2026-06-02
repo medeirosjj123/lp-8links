@@ -28,7 +28,9 @@
   --color-border-orange: rgba(249, 115, 22, 0.2);
   --color-text-primary: #f0f0f0;
   --color-text-secondary: #999999;
-  --color-text-muted: #555555;
+  /* harden(a11y): #555 dava 2.72:1 sobre o surface #050505 (reprova WCAG AA).
+     #807c76 = 4.86:1, passa AA, e ganha um tinte quente (Regra do Tinte). */
+  --color-text-muted: #807c76;
 
   --font-display: 'Outfit', system-ui, sans-serif;
   --font-body: 'Satoshi', system-ui, sans-serif;
@@ -555,4 +557,52 @@ section[id] {
 
 .pricing-table-row:last-child .pricing-table-cell {
   border-bottom: none;
+}
+
+/* ── Focus visible (a11y: navegação por teclado) ── */
+/* CTAs, links e controles interativos ganham anel de foco visível.
+   :focus-visible só dispara no teclado, não polui o clique de mouse. */
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--color-orange-400);
+  outline-offset: 3px;
+  border-radius: 6px;
+}
+
+.btn-glow:focus-visible,
+.btn-outline:focus-visible {
+  outline: 2px solid var(--color-orange-400);
+  outline-offset: 3px;
+}
+
+/* ── Reduced motion (a11y: prefers-reduced-motion) ── */
+/* Desliga animação decorativa e infinita (aurora, marquee, beam, gradiente,
+   pulse) pra quem pede menos movimento. Conteúdo dos reveals é forçado a
+   visível, então nada some se o movimento for cortado. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .aurora::before,
+  .aurora::after,
+  .marquee-track,
+  .border-beam::before,
+  .shine-border::before,
+  .gradient-text,
+  .pulse-ring::before {
+    animation: none !important;
+  }
 }
